@@ -13,10 +13,10 @@
 
 ## Features
 
-[x] Horizontal or vertical mode
-[x] Custom image loading methods
-[x] Configurable properties
-[x] Right-to-left support
+- [x] Horizontal or vertical mode
+- [x] Custom image loading methods
+- [x] Configurable properties
+- [x] Right-to-left support
 
 ## Examples
 
@@ -86,7 +86,13 @@ let verticalConfs: ZZSliderConfigs = {
 vSlider.configs = verticalConfs
 
 ```
-
+### Delegate
+```swift
+public protocol ZZImageSliderDelegate: class {
+    func didSlideTo(item: ZZSliderItem, index: Int)
+    func didSelectSlide(item: ZZSliderItem, index: Int)
+}
+```
 To run the example project, clone the repo, and run `pod install` from the
 Example directory first.
 
