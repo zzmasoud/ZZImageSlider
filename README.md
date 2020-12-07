@@ -1,6 +1,8 @@
 # ZZImageSlider
-![](https://img.shields.io/github/license/zzmasoud/zzimageslider)
-![](https://img.shields.io/badge/Swift-v5-orange)
+[![Platform](https://img.shields.io/cocoapods/p/ZZImageSlider.svg?style=flat)](http://cocoapods.org/pods/ZZImageSlider)
+[![Version](https://img.shields.io/cocoapods/v/ZZImageSlider.svg?style=flat)](http://cocoapods.org/pods/ZZImageSlider)
+![Swift Version](https://img.shields.io/badge/Swift-v5-orange)
+[![License](https://img.shields.io/cocoapods/l/ZZImageSlider.svg?style=flat)](http://cocoapods.org/pods/ZZImageSlider)
 
 <br />
 <br />
@@ -24,11 +26,22 @@ Horizontal                 |  Vertical
 :-------------------------:|:-------------------------:
 ![](Assets/h-demo.png)     |  ![](Assets/v-demo.png)
 
-
 ## Requirements
 
 - iOS 10.0+
 - Xcode 8+
+
+## Installation
+
+- Swift Package Manager:
+```
+Xcode > File > Swift Packages > Add Package Dependency...
+```
+
+- [CocoaPods](http://cocoapods.org):
+```ruby
+pod 'ZZImageSlider'
+```
 
 ## Usage
 
@@ -107,7 +120,6 @@ Masoud Sheikh Hosseini
 
 - https://github.com/zzmasoud
 - zzmasoud@gmail.com
-
 
 ## License
 
