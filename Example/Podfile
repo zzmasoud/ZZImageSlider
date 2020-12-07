@@ -1,0 +1,6 @@
+platform :ios, '10.0'
+
+target 'ZZImageSlider-Example' do
+  use_frameworks!
+  pod 'ZZImageSlider', :path => '../', :inhibit_warnings => false
+end
