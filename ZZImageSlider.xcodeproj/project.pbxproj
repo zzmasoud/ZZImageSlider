@@ -60,6 +60,7 @@
 			isa = PBXGroup;
 			children = (
 				047956FF29291BAE004D884F /* Classes */,
+				0479571329291DFA004D884F /* Helpers */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -69,11 +70,18 @@
 			children = (
 				0479570029291BAE004D884F /* ZZSliderItem.swift */,
 				0479570129291BAE004D884F /* ZZSliderImageView.swift */,
-				0479570329291BAE004D884F /* UIView+Autolayout.swift */,
 				0479570429291BAE004D884F /* ZZSliderConfigs.swift */,
 				0479570529291BAE004D884F /* ZZImageSlider.swift */,
 			);
 			path = Classes;
+			sourceTree = "<group>";
+		};
+		0479571329291DFA004D884F /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				0479570329291BAE004D884F /* UIView+Autolayout.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		048B01CD29261B8F00B29EE4 = {
