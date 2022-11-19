@@ -8,7 +8,7 @@
 
 import UIKit
 
-public protocol ZZImageSliderDelegate: class {
+public protocol ZZImageSliderDelegate: AnyObject {
     func didSlideTo(item: ZZSliderItem, index: Int)
     func didSelectSlide(item: ZZSliderItem, index: Int)
 }
