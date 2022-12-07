@@ -116,9 +116,7 @@ Feel free to submit Pull Requests or send me your feedback and suggestions!
 
 ## Author
 
-Masoud Sheikh Hosseini
-
-- https://github.com/zzmasoud
+zzmasoud
 - zzmasoud@gmail.com
 
 ## License
