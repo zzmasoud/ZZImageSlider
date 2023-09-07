@@ -5,17 +5,22 @@ import PackageDescription
 let package = Package(
     name: "ZZImageSlider",
     platforms: [
-        .iOS(.v10)
+        .iOS(.v14)
     ],
     products: [
         .library(
             name: "ZZImageSlider",
             targets: ["ZZImageSlider"]),
+        .library(
+            name: "ZZImageSliderSwiftUI",
+            targets: ["ZZImageSliderSwiftUI"]),
     ],
     targets: [
         .target(
-            name: "ZZImageSlider",
-            path: "Sources/Classes")
-    ],
-    swiftLanguageVersions: [.v5]
+            name: "ZZImageSlider"
+        ),
+        .target(
+            name: "ZZImageSliderSwiftUI"
+        )
+    ]
 )
