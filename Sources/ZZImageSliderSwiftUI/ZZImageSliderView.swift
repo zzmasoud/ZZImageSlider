@@ -3,30 +3,7 @@
 //  
 
 import SwiftUI
-
-struct Model: Identifiable {
-    let id = UUID()
-    let title: String
-    let subtitle: String
-}
-
-class ZZImageSliderViewModel: ObservableObject {
-    private(set) var items: [Model] = [
-        .init(title: "Red", subtitle: "Red Color"),
-        .init(title: "Green", subtitle: "Green Color"),
-        .init(title: "Blue", subtitle: "Blue Color"),
-    ]
-    
-    @Published var currentItem: Model
-    
-    init() {
-        self.currentItem = items[0]
-    }
-    
-    func didTap(item: Model) {
-        currentItem = item
-    }
-}
+import Combine
 
 struct ZZImageSliderView: View {
     @StateObject var viewModel: ZZImageSliderViewModel
@@ -42,10 +19,14 @@ struct ZZImageSliderView: View {
                     VStack {
                         Spacer()
                         VStack(alignment: .leading) {
-                            Text(viewModel.currentItem.title)
-                                .font(.headline)
-                            Text(viewModel.currentItem.subtitle)
-                                .font(.subheadline)
+                            if let title = viewModel.currentItem.title {
+                                Text(title)
+                                    .font(.headline)
+                            }
+                            if let subtitle = viewModel.currentItem.subtitle {
+                                Text(subtitle)
+                                    .font(.subheadline)
+                            }
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(8)
@@ -71,7 +52,12 @@ struct ZZImageSliderView: View {
 
 struct ZZImageSliderView_Previews: PreviewProvider {
     static var previews: some View {
-        ZZImageSliderView(viewModel: .init())
-            .previewLayout(.fixed(width: 370, height: 200))
+        ZZImageSliderView(viewModel: .init(items: [
+            .init(title: "Red", subtitle: "Red Color", imageURL: URL(string: "https://picsum.photos/200")!),
+            .init(title: "Green", subtitle: "Green Color", imageURL: URL(string: "https://picsum.photos/400")!),
+            .init(title: "Blue", subtitle: "Blue Color", imageURL: URL(string: "https://picsum.photos/600")!)
+            ]
+        ))
+        .previewLayout(.fixed(width: 370, height: 200))
     }
 }
