@@ -21,6 +21,13 @@ let package = Package(
         ),
         .target(
             name: "ZZImageSliderSwiftUI"
-        )
+        ),
     ]
+)
+
+package.targets.append(
+    .testTarget(
+        name: "ZZImageSliderSwiftUITests",
+        dependencies: ["ZZImageSliderSwiftUI"]
+    )
 )
