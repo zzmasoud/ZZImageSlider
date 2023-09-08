@@ -6,19 +6,16 @@ import SwiftUI
 import Combine
 
 public class ZZImageSliderViewModel: ObservableObject {
-    private var cancellables = [AnyCancellable]()
     private(set) var items: [ZZImageSliderItem]
     @Published var currentItem: ZZImageSliderItem
-
-    init(items: [ZZImageSliderItem]) {
+    
+    public init(items: [ZZImageSliderItem], timer: TimerProtocol) {
         self.items = items
         self.currentItem = items[0]
-        Timer.publish(every: 1, on: .main, in: .common)
-            .autoconnect()
-            .sink { [weak self] _ in
-                self?.next()
-            }
-            .store(in: &cancellables)
+        timer.start()
+        timer.onFire = { [weak self] in
+            self?.next()
+        }
     }
     
     func didTap(item: ZZImageSliderItem) {
