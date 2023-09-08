@@ -55,11 +55,7 @@ final class TimerUseCaseTests: XCTestCase {
         
         private(set) var messages = [Message]()
         
-        var onFire: () -> Void
-        
-        init() {
-            onFire = {}
-        }
+        var onFire: (() -> Void)?
         
         func start() {
             messages.append(.start)
@@ -71,7 +67,7 @@ final class TimerUseCaseTests: XCTestCase {
         
         func fire(_ number: Int = 1) {
             for _ in 0..<number {
-                onFire()
+                onFire?()
                 messages.append(.fire)
             }
         }

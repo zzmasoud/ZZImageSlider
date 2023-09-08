@@ -5,12 +5,12 @@
 import SwiftUI
 import Combine
 
-public class ZZImageSliderViewModel: ObservableObject {
+class ZZImageSliderViewModel: ObservableObject {
     private(set) var items: [ZZImageSliderItem]
     @Published var currentItem: ZZImageSliderItem
     private var timer: TimerProtocol
     
-    public init(items: [ZZImageSliderItem], timer: TimerProtocol) {
+    init(items: [ZZImageSliderItem], timer: TimerProtocol = DefaultTimer(timeInterval: 1)) {
         self.items = items
         self.currentItem = items[0]
         self.timer = timer

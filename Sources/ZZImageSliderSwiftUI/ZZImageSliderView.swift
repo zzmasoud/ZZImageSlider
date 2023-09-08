@@ -50,20 +50,16 @@ struct ZZImageSliderView: View {
     }
 }
 
-//struct ZZImageSliderView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ZZImageSliderView(
-//            viewModel: .init(
-//                items: [
-//            .init(title: "Red", subtitle: "Red Color", imageURL: URL(string: "https://picsum.photos/200")!),
-//            .init(title: "Green", subtitle: "Green Color", imageURL: URL(string: "https://picsum.photos/400")!),
-//            .init(title: "Blue", subtitle: "Blue Color", imageURL: URL(string: "https://picsum.photos/600")!)
-//            ],
-//                timer:
-//        )
-//        )
-//        .previewLayout(.fixed(width: 370, height: 200))
-//    }
-//
-//    private
-//}
+struct ZZImageSliderView_Previews: PreviewProvider {
+    static var previews: some View {
+        ZZImageSliderView(
+            viewModel: .init(
+                items: [
+            .init(title: "Red", subtitle: "Red Color", imageURL: URL(string: "https://picsum.photos/200")!),
+            .init(title: "Green", subtitle: "Green Color", imageURL: URL(string: "https://picsum.photos/400")!),
+            .init(title: "Blue", subtitle: "Blue Color", imageURL: URL(string: "https://picsum.photos/600")!)
+            ])
+        )
+        .previewLayout(.fixed(width: 370, height: 200))
+    }
+}
