@@ -3,7 +3,7 @@
 //  
 
 import XCTest
-import ZZImageSliderSwiftUI
+@testable import ZZImageSliderSwiftUI
 
 final class TimerUseCaseTests: XCTestCase {
     
@@ -13,21 +13,32 @@ final class TimerUseCaseTests: XCTestCase {
         XCTAssertEqual(timer.messages, [.start])
     }
     
+    func test_onTimerFire_nextItemIsSelected() {
+        let startIndex = Self.mockItems.startIndex
+        let (sut, timer) = makeSUT()
+        XCTAssertEqual(sut.currentItem, Self.mockItems[startIndex])
+        
+        timer.fire()
+        XCTAssertEqual(sut.currentItem, Self.mockItems[startIndex + 1])
+    }
+    
     // MARK: - Helper
     
     private func makeSUT() -> (ZZImageSliderViewModel, TimerSpy) {
-        let mockItems = (1...3).map {
+        let timerSpy = TimerSpy()
+        let sut = ZZImageSliderViewModel(items: Self.mockItems, timer: timerSpy)
+        
+        return (sut, timerSpy)
+    }
+    
+    private static var mockItems: [ZZImageSliderItem] = {
+        return (1...3).map {
             ZZImageSliderItem(
                 title: "Title \($0)",
                 imageURL: URL(string: "http://url-\($0).com")!
             )
         }
-        
-        let timerSpy = TimerSpy()
-        let sut = ZZImageSliderViewModel(items: mockItems, timer: timerSpy)
-        
-        return (sut, timerSpy)
-    }
+    }()
     
     private class TimerSpy: TimerProtocol {
         enum Message {
@@ -50,12 +61,11 @@ final class TimerUseCaseTests: XCTestCase {
             messages.append(.reset)
         }
         
-        func fire(_ number: Int) {
+        func fire(_ number: Int = 1) {
             for _ in 0..<number {
                 onFire()
                 messages.append(.fire)
             }
         }
-        
     }
 }
