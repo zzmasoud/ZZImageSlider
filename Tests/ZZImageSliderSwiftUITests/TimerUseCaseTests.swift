@@ -22,6 +22,14 @@ final class TimerUseCaseTests: XCTestCase {
         XCTAssertEqual(sut.currentItem, Self.mockItems[startIndex + 1])
     }
     
+    func test_didTap_resetsTiemr() {
+        let (sut, timer) = makeSUT()
+
+        sut.didTap(item: Self.mockItems.randomElement()!)
+        
+        XCTAssertEqual(timer.messages, [.start, .reset])
+    }
+    
     // MARK: - Helper
     
     private func makeSUT() -> (ZZImageSliderViewModel, TimerSpy) {

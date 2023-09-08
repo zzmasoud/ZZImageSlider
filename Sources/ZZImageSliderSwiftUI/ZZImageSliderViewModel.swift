@@ -8,10 +8,12 @@ import Combine
 public class ZZImageSliderViewModel: ObservableObject {
     private(set) var items: [ZZImageSliderItem]
     @Published var currentItem: ZZImageSliderItem
+    private var timer: TimerProtocol
     
     public init(items: [ZZImageSliderItem], timer: TimerProtocol) {
         self.items = items
         self.currentItem = items[0]
+        self.timer = timer
         timer.start()
         timer.onFire = { [weak self] in
             self?.next()
@@ -20,6 +22,7 @@ public class ZZImageSliderViewModel: ObservableObject {
     
     func didTap(item: ZZImageSliderItem) {
         currentItem = item
+        timer.reset()
     }
     
     private func next() {
