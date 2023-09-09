@@ -18,6 +18,7 @@ struct ZZImageSliderView: View {
                         Image(uiImage: image)
                             .resizable()
                             .cornerRadius(16)
+                            .animation(.easeIn, value: image)
                     } else {
                         RoundedRectangle(cornerRadius: 16)
                             .fill(.gray)
@@ -28,10 +29,14 @@ struct ZZImageSliderView: View {
                             if let title = viewModel.currentItem.title {
                                 Text(title)
                                     .font(.headline)
+                                    .lineLimit(1)
+                                    .animation(.easeIn, value: title)
                             }
                             if let subtitle = viewModel.currentItem.subtitle {
                                 Text(subtitle)
                                     .font(.subheadline)
+                                    .lineLimit(1)
+                                    .animation(.easeIn, value: subtitle)
                             }
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
