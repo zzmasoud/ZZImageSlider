@@ -14,23 +14,30 @@ struct ZZImageSliderView: View {
     
     /// Percentage of a total available width for the view.
     /// default is `0.2` (20%)
-    let sideItemsWidth: CGFloat = 0.2
+    var sideItemsWidth: CGFloat = 0.2
     
     /// Space for the stack showing slide items
     /// default is `8`
-    let spaceBetweenItems: CGFloat = 8
+    var spaceBetweenItems: CGFloat = 8
     
     /// Position of the side items
     /// default is `.trailing`
-    let sideItemsPosition: Position = .trailing
+    var sideItemsPosition: Position = .trailing
+    
+    init(viewModel: ZZImageSliderViewModel, sideItemWidth: CGFloat = 0.2, spaceBetweenItems: CGFloat = 8, sideItemsPosition: Position = .trailing) {
+        self._viewModel = .init(wrappedValue: viewModel)
+        self.sideItemsWidth = sideItemWidth
+        self.spaceBetweenItems = spaceBetweenItems
+        self.sideItemsPosition = sideItemsPosition
+    }
     
     var body: some View {
         GeometryReader { proxy in
-            let subItemWidth = proxy.size.width * sideItemsWidth
-            let sideItemsView = sideSliderItemsView(width: subItemWidth)
             
             switch sideItemsPosition {
             case .leading, .trailing:
+                let subItemWidth = proxy.size.width * sideItemsWidth
+                let sideItemsView = sideSliderItemsView(width: subItemWidth)
                 HStack(spacing: spaceBetweenItems) {
                     if sideItemsPosition == .trailing {
                         mainSliderItemView
@@ -41,7 +48,17 @@ struct ZZImageSliderView: View {
                     }
                 }
             case .top, .bottom:
-                EmptyView()
+                VStack(spacing: spaceBetweenItems) {
+                    let subItemHeight = proxy.size.height * sideItemsWidth
+                    let sideItemsView = sideSliderItemsView(height: subItemHeight)
+                    if sideItemsPosition == .bottom {
+                        mainSliderItemView
+                        sideItemsView
+                    } else {
+                        sideItemsView
+                        mainSliderItemView
+                    }
+                }
             }
         }
     }
@@ -113,18 +130,41 @@ struct ZZImageSliderView: View {
         .frame(width: subItemWidth)
         .padding(.vertical)
     }
+    
+    private func sideSliderItemsView(height subItemHeight: CGFloat) -> some View {
+        HStack(spacing: spaceBetweenItems) {
+            ForEach(viewModel.items) { item in
+                ZZImageSliderItemView(image: viewModel.imageFor(item: item))
+                    .frame(width: subItemHeight * 1.2, height: subItemHeight)
+                    .background(Color.secondary)
+                    .cornerRadius(8)
+                    .onTapGesture { viewModel.didTap(item: item) }
+            }
+        }
+        .frame(height: subItemHeight)
+        .padding(.horizontal)
+    }
 }
 
 struct ZZImageSliderView_Previews: PreviewProvider {
     static var previews: some View {
+        let items: [ZZImageSliderItem] = [
+            .init(title: "Red", subtitle: "Red Color", imageURL: URL(string: "https://picsum.photos/200")!),
+            .init(title: "Green", subtitle: "Green Color", imageURL: URL(string: "https://picsum.photos/400")!),
+            .init(title: "Blue", subtitle: "Blue Color", imageURL: URL(string: "https://picsum.photos/600")!)
+        ]
+        
         ZZImageSliderView(
-            viewModel: .init(
-                items: [
-                    .init(title: "Red", subtitle: "Red Color", imageURL: URL(string: "https://picsum.photos/200")!),
-                    .init(title: "Green", subtitle: "Green Color", imageURL: URL(string: "https://picsum.photos/400")!),
-                    .init(title: "Blue", subtitle: "Blue Color", imageURL: URL(string: "https://picsum.photos/600")!)
-                ])
+            viewModel: .init(items: items)
         )
         .frame(width: 370, height: 250)
+        .previewDisplayName("Vertical Style")
+        
+        ZZImageSliderView(
+            viewModel: .init(items: items),
+            sideItemsPosition: .bottom
+        )
+        .frame(width: 370, height: 370)
+        .previewDisplayName("Horizontal Style")
     }
 }
