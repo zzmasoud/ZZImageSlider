@@ -6,15 +6,42 @@ import SwiftUI
 import Combine
 
 struct ZZImageSliderView: View {
+    enum Position {
+        case leading, trailing, top, bottom
+    }
+    
     @StateObject var viewModel: ZZImageSliderViewModel
+    
+    /// Percentage of a total available width for the view.
+    /// default is `0.2` (20%)
+    let sideItemsWidth: CGFloat = 0.2
+    
+    /// Space for the stack showing slide items
+    /// default is `8`
+    let spaceBetweenItems: CGFloat = 8
+    
+    /// Position of the side items
+    /// default is `.trailing`
+    let sideItemsPosition: Position = .trailing
     
     var body: some View {
         GeometryReader { proxy in
-            let subItemWidth = proxy.size.width * 0.2
+            let subItemWidth = proxy.size.width * sideItemsWidth
+            let sideItemsView = sideSliderItemsView(width: subItemWidth)
             
-            HStack(spacing: 8) {
-                mainSliderItemView
-                sideSliderItemsView(width: subItemWidth)
+            switch sideItemsPosition {
+            case .leading, .trailing:
+                HStack(spacing: spaceBetweenItems) {
+                    if sideItemsPosition == .trailing {
+                        mainSliderItemView
+                        sideItemsView
+                    } else {
+                        sideItemsView
+                        mainSliderItemView
+                    }
+                }
+            case .top, .bottom:
+                EmptyView()
             }
         }
     }
@@ -74,7 +101,7 @@ struct ZZImageSliderView: View {
     }
     
     private func sideSliderItemsView(width subItemWidth: CGFloat) -> some View {
-        VStack(spacing: 8) {
+        VStack(spacing: spaceBetweenItems) {
             ForEach(viewModel.items) { item in
                 ZZImageSliderItemView(image: viewModel.imageFor(item: item))
                     .frame(width: subItemWidth, height: subItemWidth * 0.75)
@@ -98,6 +125,6 @@ struct ZZImageSliderView_Previews: PreviewProvider {
                     .init(title: "Blue", subtitle: "Blue Color", imageURL: URL(string: "https://picsum.photos/600")!)
                 ])
         )
-        .previewLayout(.fixed(width: 370, height: 250))
+        .frame(width: 370, height: 250)
     }
 }
