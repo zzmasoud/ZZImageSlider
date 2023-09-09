@@ -8,11 +8,14 @@ import Combine
 class ZZImageSliderViewModel: ObservableObject {
     private(set) var items: [ZZImageSliderItem]
     private var timer: TimerProtocol
+    private var delegate: ZZImageSliderViewDelegagte?
     
-    init(items: [ZZImageSliderItem], timer: TimerProtocol = DefaultTimer(timeInterval: 2)) {
+    init(items: [ZZImageSliderItem], timer: TimerProtocol = DefaultTimer(timeInterval: 2), delegate: ZZImageSliderViewDelegagte? = nil) {
         self.items = items
         self.currentItem = items[0]
         self.timer = timer
+        self.delegate = delegate
+        
         timer.start()
         timer.onFire = { [weak self] in
             self?.next()
@@ -45,6 +48,10 @@ class ZZImageSliderViewModel: ObservableObject {
     func didTap(item: ZZImageSliderItem) {
         currentItem = item
         timer.reset()
+    }
+    
+    func didTapItem() {
+        delegate?.didTap(item: currentItem)
     }
     
     private func next() {

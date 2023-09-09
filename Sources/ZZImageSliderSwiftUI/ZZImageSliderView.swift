@@ -5,6 +5,10 @@
 import SwiftUI
 import Combine
 
+protocol ZZImageSliderViewDelegagte {
+    func didTap(item: ZZImageSliderItem)
+}
+
 struct ZZImageSliderView: View {
     enum Position {
         case leading, trailing, top, bottom
@@ -67,6 +71,7 @@ struct ZZImageSliderView: View {
         ZStack {
             VStack {
                 mainView
+                    .onTapGesture { viewModel.didTapItem() }
             }
             VStack {
                 Spacer()
