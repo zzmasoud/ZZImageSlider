@@ -14,35 +14,51 @@ struct ZZImageSliderView: View {
         case leading, trailing, top, bottom
     }
     
+    enum AspectRatio {
+        case square, rectangle(ratio: CGFloat)
+    }
+    
     @StateObject var viewModel: ZZImageSliderViewModel
     
-    /// Percentage of a total available width for the view.
-    /// default is `0.2` (20%)
-    var sideItemsWidth: CGFloat = 0.2
-    
-    /// Space for the stack showing slide items
+    /// Space for the stack showing side items
     /// default is `8`
-    var spaceBetweenItems: CGFloat = 8
+    var sideItemsSpace: CGFloat
     
     /// Position of the side items
     /// default is `.trailing`
-    var sideItemsPosition: Position = .trailing
+    var sideItemsPosition: Position
     
-    init(viewModel: ZZImageSliderViewModel, sideItemWidth: CGFloat = 0.2, spaceBetweenItems: CGFloat = 8, sideItemsPosition: Position = .trailing) {
+    /// strech the side view as available space, it will be width for horizontal positions and height for vertical positions
+    /// default is `0.2` (20%)
+    var sideItemsShare: CGFloat
+    
+    /// Each side item aspect ratio
+    /// default is `.square`
+    var eachSideItemAspectRatio: AspectRatio
+    
+    init(viewModel: ZZImageSliderViewModel,
+         sideItemsShare: CGFloat = 0.2,
+         spaceBetweenItems: CGFloat = 8,
+         sideItemsPosition: Position = .trailing,
+         eachSideItemAspectRatio: AspectRatio = .square
+    ) {
         self._viewModel = .init(wrappedValue: viewModel)
-        self.sideItemsWidth = sideItemWidth
-        self.spaceBetweenItems = spaceBetweenItems
+        self.sideItemsShare = sideItemsShare
+        self.sideItemsSpace = spaceBetweenItems
         self.sideItemsPosition = sideItemsPosition
+        self.eachSideItemAspectRatio = eachSideItemAspectRatio
     }
     
     var body: some View {
         GeometryReader { proxy in
-            
             switch sideItemsPosition {
             case .leading, .trailing:
-                let subItemWidth = proxy.size.width * sideItemsWidth
-                let sideItemsView = sideSliderItemsView(width: subItemWidth)
-                HStack(spacing: spaceBetweenItems) {
+                let sideItemWidth = proxy.size.width * sideItemsShare
+                let sideItemSize = calculateSubItemSize(sideItemWidth)
+                let sideItemsView = sideSliderItemsView(size: sideItemSize)
+                    .frame(width: sideItemWidth)
+                
+                HStack(spacing: sideItemsSpace) {
                     if sideItemsPosition == .trailing {
                         mainSliderItemView
                         sideItemsView
@@ -52,9 +68,12 @@ struct ZZImageSliderView: View {
                     }
                 }
             case .top, .bottom:
-                VStack(spacing: spaceBetweenItems) {
-                    let subItemHeight = proxy.size.height * sideItemsWidth
-                    let sideItemsView = sideSliderItemsView(height: subItemHeight)
+                VStack(spacing: sideItemsSpace) {
+                    let sideItemHeight = proxy.size.height * sideItemsShare
+                    let sideItemSize = calculateSubItemSize(sideItemHeight)
+                    let sideItemsView = sideSliderItemsView(size: sideItemSize)
+                        .frame(width: sideItemHeight)
+                    
                     if sideItemsPosition == .bottom {
                         mainSliderItemView
                         sideItemsView
@@ -66,6 +85,8 @@ struct ZZImageSliderView: View {
             }
         }
     }
+    
+    private var isVertical: Bool { sideItemsPosition == .leading || sideItemsPosition == .trailing }
     
     private var mainSliderItemView: some View {
         ZStack {
@@ -85,9 +106,9 @@ struct ZZImageSliderView: View {
         if let image = viewModel.currentImage {
             return AnyView(
                 Image(uiImage: image)
-                .resizable()
-                .cornerRadius(16)
-                .animation(.easeIn, value: image)
+                    .resizable()
+                    .cornerRadius(16)
+                    .animation(.easeIn, value: image)
             )
         } else {
             return AnyView(
@@ -122,32 +143,42 @@ struct ZZImageSliderView: View {
         )
     }
     
-    private func sideSliderItemsView(width subItemWidth: CGFloat) -> some View {
-        VStack(spacing: spaceBetweenItems) {
-            ForEach(viewModel.items) { item in
-                ZZImageSliderItemView(image: viewModel.imageFor(item: item))
-                    .frame(width: subItemWidth, height: subItemWidth * 0.75)
-                    .background(Color.secondary)
-                    .cornerRadius(8)
-                    .onTapGesture { viewModel.didTap(item: item) }
-            }
+    private func sideSliderItemsView(size: CGSize) -> AnyView {
+        let views = ForEach(viewModel.items) { item in
+            ZZImageSliderItemView(image: viewModel.imageFor(item: item))
+                .frame(width: size.width, height: size.height)
+                .background(Color.secondary)
+                .cornerRadius(8)
+                .onTapGesture { viewModel.didTap(item: item) }
         }
-        .frame(width: subItemWidth)
-        .padding(.vertical)
+        if isVertical {
+            return AnyView(
+                VStack(spacing: sideItemsSpace) {
+                    views
+                }
+                    .padding(.vertical)
+            )
+        } else {
+            return AnyView(
+                HStack(spacing: sideItemsSpace) {
+                    views
+                }
+                    .padding(.horizontal)
+            )
+        }
     }
     
-    private func sideSliderItemsView(height subItemHeight: CGFloat) -> some View {
-        HStack(spacing: spaceBetweenItems) {
-            ForEach(viewModel.items) { item in
-                ZZImageSliderItemView(image: viewModel.imageFor(item: item))
-                    .frame(width: subItemHeight * 1.2, height: subItemHeight)
-                    .background(Color.secondary)
-                    .cornerRadius(8)
-                    .onTapGesture { viewModel.didTap(item: item) }
+    private func calculateSubItemSize(_ number: CGFloat) -> CGSize {
+        switch eachSideItemAspectRatio {
+        case .square:
+            return CGSize(width: number, height: number)
+        case .rectangle(let ratio):
+            if isVertical {
+                return CGSize(width: number, height: number * ratio)
+            } else {
+                return CGSize(width: number * ratio, height: number)
             }
         }
-        .frame(height: subItemHeight)
-        .padding(.horizontal)
     }
 }
 
@@ -167,7 +198,9 @@ struct ZZImageSliderView_Previews: PreviewProvider {
         
         ZZImageSliderView(
             viewModel: .init(items: items),
-            sideItemsPosition: .bottom
+            sideItemsShare: 0.15,
+            sideItemsPosition: .bottom,
+            eachSideItemAspectRatio: .rectangle(ratio: 1.35)
         )
         .frame(width: 370, height: 370)
         .previewDisplayName("Horizontal Style")
