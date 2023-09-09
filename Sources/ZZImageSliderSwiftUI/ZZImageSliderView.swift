@@ -51,8 +51,7 @@ struct ZZImageSliderView: View {
     
     var body: some View {
         GeometryReader { proxy in
-            switch sideItemsPosition {
-            case .leading, .trailing:
+            if isVertical {
                 let sideItemWidth = proxy.size.width * sideItemsShare
                 let sideItemSize = calculateSubItemSize(sideItemWidth)
                 let sideItemsView = sideSliderItemsView(size: sideItemSize)
@@ -67,13 +66,13 @@ struct ZZImageSliderView: View {
                         mainSliderItemView
                     }
                 }
-            case .top, .bottom:
+            } else {
+                let sideItemHeight = proxy.size.height * sideItemsShare
+                let sideItemSize = calculateSubItemSize(sideItemHeight)
+                let sideItemsView = sideSliderItemsView(size: sideItemSize)
+                    .frame(width: sideItemHeight)
+                
                 VStack(spacing: sideItemsSpace) {
-                    let sideItemHeight = proxy.size.height * sideItemsShare
-                    let sideItemSize = calculateSubItemSize(sideItemHeight)
-                    let sideItemsView = sideSliderItemsView(size: sideItemSize)
-                        .frame(width: sideItemHeight)
-                    
                     if sideItemsPosition == .bottom {
                         mainSliderItemView
                         sideItemsView
@@ -126,6 +125,7 @@ struct ZZImageSliderView: View {
                     .lineLimit(1)
                     .animation(.easeIn, value: title)
             }
+            
             if let subtitle = viewModel.currentItem.subtitle {
                 Text(subtitle)
                     .font(.subheadline)
