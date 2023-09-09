@@ -14,8 +14,14 @@ struct ZZImageSliderView: View {
             
             HStack(spacing: 8) {
                 ZStack {
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(.gray)
+                    if let image = viewModel.currentImage {
+                        Image(uiImage: image)
+                            .resizable()
+                            .cornerRadius(16)
+                    } else {
+                        RoundedRectangle(cornerRadius: 16)
+                            .fill(.gray)
+                    }
                     VStack {
                         Spacer()
                         VStack(alignment: .leading) {
@@ -38,13 +44,15 @@ struct ZZImageSliderView: View {
                 .cornerRadius(16)
                 VStack(spacing: 8) {
                     ForEach(viewModel.items) { item in
-                        RoundedRectangle(cornerRadius: 8)
-                            .onTapGesture {
-                                viewModel.didTap(item: item)
-                            }
+                        ZZImageSliderItemView(image: viewModel.imageFor(item: item))
+                            .frame(width: subItemWidth, height: subItemWidth * 0.75)
+                            .background(Color.secondary)
+                            .cornerRadius(8)
+                            .onTapGesture { viewModel.didTap(item: item) }
                     }
                 }
                 .frame(width: subItemWidth)
+                .padding(.vertical)
             }
         }
     }
@@ -55,11 +63,11 @@ struct ZZImageSliderView_Previews: PreviewProvider {
         ZZImageSliderView(
             viewModel: .init(
                 items: [
-            .init(title: "Red", subtitle: "Red Color", imageURL: URL(string: "https://picsum.photos/200")!),
-            .init(title: "Green", subtitle: "Green Color", imageURL: URL(string: "https://picsum.photos/400")!),
-            .init(title: "Blue", subtitle: "Blue Color", imageURL: URL(string: "https://picsum.photos/600")!)
-            ])
+                    .init(title: "Red", subtitle: "Red Color", imageURL: URL(string: "https://picsum.photos/200")!),
+                    .init(title: "Green", subtitle: "Green Color", imageURL: URL(string: "https://picsum.photos/400")!),
+                    .init(title: "Blue", subtitle: "Blue Color", imageURL: URL(string: "https://picsum.photos/600")!)
+                ])
         )
-        .previewLayout(.fixed(width: 370, height: 200))
+        .previewLayout(.fixed(width: 370, height: 250))
     }
 }

@@ -7,10 +7,9 @@ import Combine
 
 class ZZImageSliderViewModel: ObservableObject {
     private(set) var items: [ZZImageSliderItem]
-    @Published var currentItem: ZZImageSliderItem
     private var timer: TimerProtocol
     
-    init(items: [ZZImageSliderItem], timer: TimerProtocol = DefaultTimer(timeInterval: 1)) {
+    init(items: [ZZImageSliderItem], timer: TimerProtocol = DefaultTimer(timeInterval: 2)) {
         self.items = items
         self.currentItem = items[0]
         self.timer = timer
@@ -18,6 +17,29 @@ class ZZImageSliderViewModel: ObservableObject {
         timer.onFire = { [weak self] in
             self?.next()
         }
+        Task {
+            await downloadImages()
+        }
+    }
+    
+    @Published var currentItem: ZZImageSliderItem
+    private var images: [URL: UIImage] = [:]
+    var currentImage: UIImage? { images[currentItem.id] }
+    
+    func downloadImages() async {
+        for item in items {
+            do {
+                let (data, _) = try await URLSession.shared.data(from: item.imageURL)
+                let image = UIImage(data: data)
+                images[item.id] = image
+            } catch {
+                images[item.id] = nil
+            }
+        }
+    }
+    
+    func imageFor(item: ZZImageSliderItem) -> UIImage? {
+        images[item.id]
     }
     
     func didTap(item: ZZImageSliderItem) {
