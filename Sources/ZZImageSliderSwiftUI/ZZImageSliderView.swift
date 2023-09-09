@@ -13,57 +13,78 @@ struct ZZImageSliderView: View {
             let subItemWidth = proxy.size.width * 0.2
             
             HStack(spacing: 8) {
-                ZStack {
-                    if let image = viewModel.currentImage {
-                        Image(uiImage: image)
-                            .resizable()
-                            .cornerRadius(16)
-                            .animation(.easeIn, value: image)
-                    } else {
-                        RoundedRectangle(cornerRadius: 16)
-                            .fill(.gray)
-                    }
-                    VStack {
-                        Spacer()
-                        VStack(alignment: .leading) {
-                            if let title = viewModel.currentItem.title {
-                                Text(title)
-                                    .font(.headline)
-                                    .lineLimit(1)
-                                    .animation(.easeIn, value: title)
-                            }
-                            if let subtitle = viewModel.currentItem.subtitle {
-                                Text(subtitle)
-                                    .font(.subheadline)
-                                    .lineLimit(1)
-                                    .animation(.easeIn, value: subtitle)
-                            }
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(8)
-                        .padding(.horizontal, 2)
-                        .foregroundColor(.white)
-                        .background(
-                            FadeView()
-                                .padding(.top, -8)
-                        )
-                        
-                    }
-                }
-                .cornerRadius(16)
-                VStack(spacing: 8) {
-                    ForEach(viewModel.items) { item in
-                        ZZImageSliderItemView(image: viewModel.imageFor(item: item))
-                            .frame(width: subItemWidth, height: subItemWidth * 0.75)
-                            .background(Color.secondary)
-                            .cornerRadius(8)
-                            .onTapGesture { viewModel.didTap(item: item) }
-                    }
-                }
-                .frame(width: subItemWidth)
-                .padding(.vertical)
+                mainSliderItemView
+                sideSliderItemsView(width: subItemWidth)
             }
         }
+    }
+    
+    private var mainSliderItemView: some View {
+        ZStack {
+            VStack {
+                mainView
+            }
+            VStack {
+                Spacer()
+                textsView
+            }
+        }
+        .cornerRadius(16)
+    }
+    
+    private var mainView: AnyView {
+        if let image = viewModel.currentImage {
+            return AnyView(
+                Image(uiImage: image)
+                .resizable()
+                .cornerRadius(16)
+                .animation(.easeIn, value: image)
+            )
+        } else {
+            return AnyView(
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(.gray)
+            )
+        }
+    }
+    
+    private var textsView: some View {
+        VStack(alignment: .leading) {
+            if let title = viewModel.currentItem.title {
+                Text(title)
+                    .font(.headline)
+                    .lineLimit(1)
+                    .animation(.easeIn, value: title)
+            }
+            if let subtitle = viewModel.currentItem.subtitle {
+                Text(subtitle)
+                    .font(.subheadline)
+                    .lineLimit(1)
+                    .animation(.easeIn, value: subtitle)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(8)
+        .padding(.horizontal, 2)
+        .foregroundColor(.white)
+        .background(
+            FadeView()
+                .padding(.top, -8)
+        )
+    }
+    
+    private func sideSliderItemsView(width subItemWidth: CGFloat) -> some View {
+        VStack(spacing: 8) {
+            ForEach(viewModel.items) { item in
+                ZZImageSliderItemView(image: viewModel.imageFor(item: item))
+                    .frame(width: subItemWidth, height: subItemWidth * 0.75)
+                    .background(Color.secondary)
+                    .cornerRadius(8)
+                    .onTapGesture { viewModel.didTap(item: item) }
+            }
+        }
+        .frame(width: subItemWidth)
+        .padding(.vertical)
     }
 }
 
