@@ -42,7 +42,11 @@ struct ZZImageSliderView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(8)
                         .padding(.horizontal, 2)
-                        .background(Color.secondary)
+                        .foregroundColor(.white)
+                        .background(
+                            FadeView()
+                                .padding(.top, -8)
+                        )
                         
                     }
                 }
