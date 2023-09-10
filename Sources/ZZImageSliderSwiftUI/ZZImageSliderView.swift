@@ -185,19 +185,23 @@ struct ZZImageSliderView: View {
 struct ZZImageSliderView_Previews: PreviewProvider {
     static var previews: some View {
         let items: [ZZImageSliderItem] = [
-            .init(title: "Red", subtitle: "Red Color", imageURL: URL(string: "https://picsum.photos/200")!),
-            .init(title: "Green", subtitle: "Green Color", imageURL: URL(string: "https://picsum.photos/400")!),
-            .init(title: "Blue", subtitle: "Blue Color", imageURL: URL(string: "https://picsum.photos/600")!)
+            .init(id: UUID().uuidString, title: "Red", subtitle: "Red Color"),
+            .init(id: UUID().uuidString, title: "Green", subtitle: "Green Color"),
+            .init(id: UUID().uuidString, title: "Blue", subtitle: "Blue Color")
         ]
         
         ZZImageSliderView(
-            viewModel: .init(items: items)
+            viewModel: .init(items: items, imageLoader: RemoteImageLoader(session: .shared, urlFetcher: { id in
+                return URL(string: "https://picsum.photos/200")!
+            }))
         )
         .frame(width: 370, height: 250)
         .previewDisplayName("Vertical Style")
         
         ZZImageSliderView(
-            viewModel: .init(items: items),
+            viewModel: .init(items: items, imageLoader: RemoteImageLoader(session: .shared, urlFetcher: { id in
+                return URL(string: "https://picsum.photos/200")!
+            })),
             sideItemsShare: 0.15,
             sideItemsPosition: .bottom,
             eachSideItemAspectRatio: .rectangle(ratio: 1.35)

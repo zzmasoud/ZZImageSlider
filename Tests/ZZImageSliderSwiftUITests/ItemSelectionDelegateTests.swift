@@ -20,7 +20,7 @@ final class ItemSelectionDelegateTests: XCTestCase {
     
     private func makeSUT() -> (ZZImageSliderViewModel, DelegateSpy) {
         let delegate = DelegateSpy()
-        let sut = ZZImageSliderViewModel(items: Self.mockItems, delegate: delegate)
+        let sut = ZZImageSliderViewModel(items: Self.mockItems, delegate: delegate, imageLoader: FakeImageLoader())
         
         return (sut, delegate)
     }
@@ -28,8 +28,8 @@ final class ItemSelectionDelegateTests: XCTestCase {
     private static var mockItems: [ZZImageSliderItem] = {
         return (1...3).map {
             ZZImageSliderItem(
-                title: "Title \($0)",
-                imageURL: URL(string: "http://url-\($0).com")!
+                id: UUID().uuidString,
+                title: "Title \($0)"
             )
         }
     }()
@@ -40,6 +40,12 @@ final class ItemSelectionDelegateTests: XCTestCase {
         
         func didTap(item: ZZImageSliderSwiftUI.ZZImageSliderItem) {
             calls.append(item)
+        }
+    }
+    
+    private final class FakeImageLoader: ImageLoader {
+        func load(id: String) async throws -> UIImage {
+            return UIImage()
         }
     }
 }

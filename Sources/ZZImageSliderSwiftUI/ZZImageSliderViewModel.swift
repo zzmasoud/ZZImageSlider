@@ -9,12 +9,14 @@ class ZZImageSliderViewModel: ObservableObject {
     private(set) var items: [ZZImageSliderItem]
     private var timer: TimerProtocol
     private var delegate: ZZImageSliderViewDelegagte?
+    private var imageLoader: ImageLoader
     
-    init(items: [ZZImageSliderItem], timer: TimerProtocol = DefaultTimer(timeInterval: 2), delegate: ZZImageSliderViewDelegagte? = nil) {
+    init(items: [ZZImageSliderItem], timer: TimerProtocol = DefaultTimer(timeInterval: 2), delegate: ZZImageSliderViewDelegagte? = nil, imageLoader: ImageLoader) {
         self.items = items
         self.currentItem = items[0]
         self.timer = timer
         self.delegate = delegate
+        self.imageLoader = imageLoader
         
         timer.start()
         timer.onFire = { [weak self] in
@@ -26,14 +28,13 @@ class ZZImageSliderViewModel: ObservableObject {
     }
     
     @Published var currentItem: ZZImageSliderItem
-    private var images: [URL: UIImage] = [:]
+    private var images: [String: UIImage] = [:]
     var currentImage: UIImage? { images[currentItem.id] }
     
     func downloadImages() async {
         for item in items {
             do {
-                let (data, _) = try await URLSession.shared.data(from: item.imageURL)
-                let image = UIImage(data: data)
+                let image = try await imageLoader.load(id: item.id)
                 images[item.id] = image
             } catch {
                 images[item.id] = nil

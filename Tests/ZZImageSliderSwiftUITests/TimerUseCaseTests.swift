@@ -34,7 +34,7 @@ final class TimerUseCaseTests: XCTestCase {
     
     private func makeSUT() -> (ZZImageSliderViewModel, TimerSpy) {
         let timerSpy = TimerSpy()
-        let sut = ZZImageSliderViewModel(items: Self.mockItems, timer: timerSpy)
+        let sut = ZZImageSliderViewModel(items: Self.mockItems, timer: timerSpy, imageLoader: FakeImageLoader())
         
         return (sut, timerSpy)
     }
@@ -42,8 +42,8 @@ final class TimerUseCaseTests: XCTestCase {
     private static var mockItems: [ZZImageSliderItem] = {
         return (1...3).map {
             ZZImageSliderItem(
-                title: "Title \($0)",
-                imageURL: URL(string: "http://url-\($0).com")!
+                id: UUID().uuidString,
+                title: "Title \($0)"
             )
         }
     }()
@@ -70,6 +70,12 @@ final class TimerUseCaseTests: XCTestCase {
                 onFire?()
                 messages.append(.fire)
             }
+        }
+    }
+    
+    private final class FakeImageLoader: ImageLoader {
+        func load(id: String) async throws -> UIImage {
+            return UIImage()
         }
     }
 }

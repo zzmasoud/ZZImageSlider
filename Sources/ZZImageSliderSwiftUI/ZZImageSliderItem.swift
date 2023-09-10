@@ -5,23 +5,19 @@
 import Foundation
 
 public struct ZZImageSliderItem: Identifiable, Equatable {
+    public let id: String
     public let title: String?
     public let subtitle: String?
-    public let imageURL: URL
     
-    public init(title: String, imageURL: URL) {
-        (self.title, self.subtitle, self.imageURL) = (title, nil, imageURL)
+    public init(id: String, title: String) {
+        (self.id, self.title, self.subtitle) = (id, title, nil)
     }
     
-    public init(subtitle: String, imageURL: URL) {
-        (self.title, self.subtitle, self.imageURL) = (nil, subtitle, imageURL)
+    public init(id: String, subtitle: String) {
+        (self.id, self.title, self.subtitle) = (id, nil, subtitle)
     }
     
-    public init(title: String, subtitle: String, imageURL: URL) {
-        self.title = title
-        self.subtitle = subtitle
-        self.imageURL = imageURL
+    public init(id: String, title: String, subtitle: String) {
+        (self.id, self.title, self.subtitle) = (id, title, subtitle)
     }
-    
-    public var id: URL { imageURL }
 }
