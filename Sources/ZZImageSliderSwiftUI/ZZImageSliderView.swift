@@ -101,19 +101,11 @@ struct ZZImageSliderView: View {
         .cornerRadius(16)
     }
     
-    private var mainView: AnyView {
-        if let image = viewModel.currentImage {
-            return AnyView(
-                Image(uiImage: image)
-                    .resizable()
-                    .cornerRadius(16)
-                    .animation(.easeIn, value: image)
-            )
-        } else {
-            return AnyView(
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(.gray)
-            )
+    private var mainView: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.secondary)
+            ZZImageSliderItemView(image: viewModel.currentImage)
         }
     }
     
