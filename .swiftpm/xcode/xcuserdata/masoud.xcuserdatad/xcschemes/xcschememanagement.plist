@@ -42,6 +42,11 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>ZZImageSliderSwiftUITests</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 	</dict>
 </dict>
 </plist>
