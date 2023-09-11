@@ -15,6 +15,12 @@ let package = Package(
             name: "ZZImageSliderSwiftUI",
             targets: ["ZZImageSliderSwiftUI"]),
     ],
+    dependencies: [
+        .package(
+            url: "https://github.com/pointfreeco/swift-snapshot-testing.git",
+            from: "1.12.0"
+        )
+    ],
     targets: [
         .target(
             name: "ZZImageSlider"
@@ -25,9 +31,18 @@ let package = Package(
     ]
 )
 
-package.targets.append(
+package.targets.append(contentsOf: [
     .testTarget(
         name: "ZZImageSliderSwiftUITests",
         dependencies: ["ZZImageSliderSwiftUI"]
+    ),
+    .testTarget(
+        name: "SnapshotTests",
+        dependencies: [
+            .product(
+                name: "SnapshotTesting",
+                package: "swift-snapshot-testing"
+            )
+        ]
     )
-)
+])
