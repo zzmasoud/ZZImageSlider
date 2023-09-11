@@ -38,16 +38,7 @@ final class TimerUseCaseTests: XCTestCase {
         
         return (sut, timerSpy)
     }
-    
-    private static var mockItems: [ZZImageSliderItem] = {
-        return (1...3).map {
-            ZZImageSliderItem(
-                id: UUID().uuidString,
-                title: "Title \($0)"
-            )
-        }
-    }()
-    
+        
     private class TimerSpy: TimerProtocol {
         enum Message {
             case start, reset, fire
@@ -70,12 +61,6 @@ final class TimerUseCaseTests: XCTestCase {
                 onFire?()
                 messages.append(.fire)
             }
-        }
-    }
-    
-    private final class FakeImageLoader: ImageLoader {
-        func load(id: String) async throws -> UIImage {
-            return UIImage()
         }
     }
 }

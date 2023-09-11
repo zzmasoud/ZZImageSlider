@@ -24,28 +24,13 @@ final class ItemSelectionDelegateTests: XCTestCase {
         
         return (sut, delegate)
     }
-    
-    private static var mockItems: [ZZImageSliderItem] = {
-        return (1...3).map {
-            ZZImageSliderItem(
-                id: UUID().uuidString,
-                title: "Title \($0)"
-            )
-        }
-    }()
-    
+        
     private final class DelegateSpy: ZZImageSliderViewDelegagte {
         
         private(set) var calls: [ZZImageSliderSwiftUI.ZZImageSliderItem] = []
         
         func didTap(item: ZZImageSliderSwiftUI.ZZImageSliderItem) {
             calls.append(item)
-        }
-    }
-    
-    private final class FakeImageLoader: ImageLoader {
-        func load(id: String) async throws -> UIImage {
-            return UIImage()
         }
     }
 }
