@@ -4,10 +4,7 @@
 
 import SwiftUI
 import Combine
-
-public protocol ZZImageSliderViewDelegagte {
-    func didTap(item: ZZImageSliderItem)
-}
+import ZZImageSlider
 
 public struct ZZImageSliderView: View {
     public enum Position {

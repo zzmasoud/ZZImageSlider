@@ -12,8 +12,8 @@ let package = Package(
             name: "ZZImageSlider",
             targets: ["ZZImageSlider"]),
         .library(
-            name: "ZZImageSliderSwiftUI",
-            targets: ["ZZImageSliderSwiftUI"]),
+            name: "ZZImageSliderUI",
+            targets: ["ZZImageSliderUI"]),
     ],
     dependencies: [
         .package(
@@ -26,7 +26,10 @@ let package = Package(
             name: "ZZImageSlider"
         ),
         .target(
-            name: "ZZImageSliderSwiftUI"
+            name: "ZZImageSliderUI",
+            dependencies: [
+                "ZZImageSlider"
+            ]
         ),
         .target(
           name: "TestHelper"
@@ -36,16 +39,16 @@ let package = Package(
 
 package.targets.append(contentsOf: [
     .testTarget(
-        name: "ZZImageSliderSwiftUITests",
+        name: "ZZImageSliderTests",
         dependencies: [
-            "ZZImageSliderSwiftUI",
+            "ZZImageSlider",
             "TestHelper"
         ]
     ),
     .testTarget(
         name: "SnapshotTests",
         dependencies: [
-            "ZZImageSliderSwiftUI",
+            "ZZImageSliderUI",
             "TestHelper",
             .product(
                 name: "SnapshotTesting",

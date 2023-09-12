@@ -2,11 +2,11 @@
 //  Copyright © zzmasoud (github.com/zzmasoud).
 //  
 
-import SwiftUI
+import UIKit.UIImage
 import Combine
 
 public class ZZImageSliderViewModel: ObservableObject {
-    private(set) var items: [ZZImageSliderItem]
+    private(set) public var items: [ZZImageSliderItem]
     private var timer: TimerProtocol
     private var delegate: ZZImageSliderViewDelegagte?
     private let imageLoader: ImageLoader
@@ -27,8 +27,8 @@ public class ZZImageSliderViewModel: ObservableObject {
         }
     }
     
-    @Published var currentItem: ZZImageSliderItem
-    @Published var images: [String: UIImage] = [:]
+    @Published public var currentItem: ZZImageSliderItem
+    @Published public var images: [String: UIImage] = [:]
     
     func downloadImages() async {
         for item in items {
@@ -41,16 +41,16 @@ public class ZZImageSliderViewModel: ObservableObject {
         }
     }
     
-    func imageFor(item: ZZImageSliderItem) -> UIImage? {
+    public func imageFor(item: ZZImageSliderItem) -> UIImage? {
         images[item.id]
     }
     
-    func didTap(item: ZZImageSliderItem) {
+    public func didTap(item: ZZImageSliderItem) {
         currentItem = item
         timer.reset()
     }
     
-    func didTapItem() {
+    public func didTapItem() {
         delegate?.didTap(item: currentItem)
     }
     

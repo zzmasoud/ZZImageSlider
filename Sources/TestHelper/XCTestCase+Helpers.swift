@@ -3,7 +3,7 @@
 //  
 
 import XCTest
-import ZZImageSliderSwiftUI
+import ZZImageSlider
 
 public extension XCTestCase {
     
@@ -32,7 +32,7 @@ public extension XCTestCase {
         
         private(set) public var calls: [ZZImageSliderItem] = []
         
-        public func didTap(item: ZZImageSliderSwiftUI.ZZImageSliderItem) {
+        public func didTap(item: ZZImageSlider.ZZImageSliderItem) {
             calls.append(item)
         }
     }
