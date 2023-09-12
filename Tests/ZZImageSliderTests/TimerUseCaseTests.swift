@@ -6,6 +6,7 @@ import XCTest
 import TestHelper
 import ZZImageSlider
 
+@MainActor
 final class TimerUseCaseTests: XCTestCase {
     
     func test_timer_startsAfterInstantiation() {
@@ -33,7 +34,7 @@ final class TimerUseCaseTests: XCTestCase {
     
     // MARK: - Helper
     
-    private func makeSUT() -> (ZZImageSliderViewModel, TimerSpy) {
+    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (ZZImageSliderViewModel, TimerSpy) {
         let timerSpy = TimerSpy()
         let loader = FakeImageLoader()
         let sut = ZZImageSliderViewModel(
@@ -42,9 +43,9 @@ final class TimerUseCaseTests: XCTestCase {
             imageLoader: loader
         )
         
-        trackForMemoryLeaks(timerSpy)
-        trackForMemoryLeaks(loader)
-        trackForMemoryLeaks(sut)
+        trackForMemoryLeaks(timerSpy, file: file, line: line)
+        trackForMemoryLeaks(loader, file: file, line: line)
+        trackForMemoryLeaks(sut, file: file, line: line)
         
         return (sut, timerSpy)
     }

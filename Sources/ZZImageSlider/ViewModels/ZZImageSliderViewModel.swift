@@ -5,11 +5,13 @@
 import UIKit.UIImage
 import Combine
 
+@MainActor
 public class ZZImageSliderViewModel: ObservableObject {
     private(set) public var items: [ZZImageSliderItem]
     private var timer: TimerProtocol
     private var delegate: ZZImageSliderViewDelegagte?
     private let imageLoader: ImageLoader
+    private var currentTask: Task<Void, Never>?
     
     public init(items: [ZZImageSliderItem], timer: TimerProtocol = DefaultTimer(timeInterval: 2), delegate: ZZImageSliderViewDelegagte? = nil, imageLoader: ImageLoader) {
         self.items = items
@@ -22,8 +24,8 @@ public class ZZImageSliderViewModel: ObservableObject {
         timer.onFire = { [weak self] in
             self?.next()
         }
-        Task {
-            await downloadImages()
+        self.currentTask = Task { [weak self] in
+            await self?.downloadImages()
         }
     }
     

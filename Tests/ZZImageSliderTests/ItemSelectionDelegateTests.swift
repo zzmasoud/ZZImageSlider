@@ -6,6 +6,7 @@ import XCTest
 import TestHelper
 import ZZImageSlider
 
+@MainActor
 final class ItemSelectionDelegateTests: XCTestCase {
     
     func test_delegate_triggersOnMainItemSelection() {
@@ -19,7 +20,7 @@ final class ItemSelectionDelegateTests: XCTestCase {
     
     // MARK: - Helper
     
-    private func makeSUT() -> (ZZImageSliderViewModel, DelegateSpy) {
+    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (ZZImageSliderViewModel, DelegateSpy) {
         let delegate = DelegateSpy()
         let loader = FakeImageLoader()
         let sut = ZZImageSliderViewModel(
@@ -28,9 +29,9 @@ final class ItemSelectionDelegateTests: XCTestCase {
             imageLoader: loader
         )
         
-        trackForMemoryLeaks(delegate)
-        trackForMemoryLeaks(loader)
-        trackForMemoryLeaks(sut)
+        trackForMemoryLeaks(delegate, file: file, line: line)
+        trackForMemoryLeaks(loader, file: file, line: line)
+        trackForMemoryLeaks(sut, file: file, line: line)
 
         return (sut, delegate)
     }
