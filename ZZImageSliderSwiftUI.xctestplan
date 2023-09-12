@@ -26,6 +26,13 @@
         "identifier" : "ZZImageSliderSwiftUITests",
         "name" : "ZZImageSliderSwiftUITests"
       }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SnapshotTests",
+        "name" : "SnapshotTests"
+      }
     }
   ],
   "version" : 1
