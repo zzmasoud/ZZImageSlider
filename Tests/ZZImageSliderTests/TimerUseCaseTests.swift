@@ -35,7 +35,16 @@ final class TimerUseCaseTests: XCTestCase {
     
     private func makeSUT() -> (ZZImageSliderViewModel, TimerSpy) {
         let timerSpy = TimerSpy()
-        let sut = ZZImageSliderViewModel(items: Self.mockItems, timer: timerSpy, imageLoader: FakeImageLoader())
+        let loader = FakeImageLoader()
+        let sut = ZZImageSliderViewModel(
+            items: Self.mockItems,
+            timer: timerSpy,
+            imageLoader: loader
+        )
+        
+        trackForMemoryLeaks(timerSpy)
+        trackForMemoryLeaks(loader)
+        trackForMemoryLeaks(sut)
         
         return (sut, timerSpy)
     }

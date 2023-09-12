@@ -21,8 +21,17 @@ final class ItemSelectionDelegateTests: XCTestCase {
     
     private func makeSUT() -> (ZZImageSliderViewModel, DelegateSpy) {
         let delegate = DelegateSpy()
-        let sut = ZZImageSliderViewModel(items: Self.mockItems, delegate: delegate, imageLoader: FakeImageLoader())
+        let loader = FakeImageLoader()
+        let sut = ZZImageSliderViewModel(
+            items: Self.mockItems,
+            delegate: delegate,
+            imageLoader: loader
+        )
         
+        trackForMemoryLeaks(delegate)
+        trackForMemoryLeaks(loader)
+        trackForMemoryLeaks(sut)
+
         return (sut, delegate)
     }
 }
