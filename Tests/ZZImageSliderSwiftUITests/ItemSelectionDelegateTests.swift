@@ -3,6 +3,7 @@
 //  
 
 import XCTest
+import TestHelper
 @testable import ZZImageSliderSwiftUI
 
 final class ItemSelectionDelegateTests: XCTestCase {
@@ -23,14 +24,5 @@ final class ItemSelectionDelegateTests: XCTestCase {
         let sut = ZZImageSliderViewModel(items: Self.mockItems, delegate: delegate, imageLoader: FakeImageLoader())
         
         return (sut, delegate)
-    }
-        
-    private final class DelegateSpy: ZZImageSliderViewDelegagte {
-        
-        private(set) var calls: [ZZImageSliderSwiftUI.ZZImageSliderItem] = []
-        
-        func didTap(item: ZZImageSliderSwiftUI.ZZImageSliderItem) {
-            calls.append(item)
-        }
     }
 }

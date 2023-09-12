@@ -3,6 +3,7 @@
 //  
 
 import XCTest
+import TestHelper
 @testable import ZZImageSliderSwiftUI
 
 final class TimerUseCaseTests: XCTestCase {
@@ -37,30 +38,5 @@ final class TimerUseCaseTests: XCTestCase {
         let sut = ZZImageSliderViewModel(items: Self.mockItems, timer: timerSpy, imageLoader: FakeImageLoader())
         
         return (sut, timerSpy)
-    }
-        
-    private class TimerSpy: TimerProtocol {
-        enum Message {
-            case start, reset, fire
-        }
-        
-        private(set) var messages = [Message]()
-        
-        var onFire: (() -> Void)?
-        
-        func start() {
-            messages.append(.start)
-        }
-        
-        func reset() {
-            messages.append(.reset)
-        }
-        
-        func fire(_ number: Int = 1) {
-            for _ in 0..<number {
-                onFire?()
-                messages.append(.fire)
-            }
-        }
     }
 }
