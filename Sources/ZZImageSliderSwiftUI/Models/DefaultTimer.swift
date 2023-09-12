@@ -4,16 +4,16 @@
 
 import Foundation
 
-final class DefaultTimer: TimerProtocol {
-    var timer: Timer?
-    var timeInterval: TimeInterval
-    var onFire: (() -> Void)?
+final public class DefaultTimer: TimerProtocol {
+    private let timeInterval: TimeInterval
+    private var timer: Timer?
+    public var onFire: (() -> Void)?
 
-    init(timeInterval: TimeInterval) {
+    public init(timeInterval: TimeInterval) {
         self.timeInterval = timeInterval
     }
 
-    func start() {
+    public func start() {
         timer?.invalidate()
         
         // Create and start a new timer
@@ -30,7 +30,7 @@ final class DefaultTimer: TimerProtocol {
         onFire?()
     }
     
-    func reset() {
+    public func reset() {
         timer?.invalidate()
         start()
     }

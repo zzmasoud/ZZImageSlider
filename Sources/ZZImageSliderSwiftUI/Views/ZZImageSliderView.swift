@@ -5,16 +5,16 @@
 import SwiftUI
 import Combine
 
-protocol ZZImageSliderViewDelegagte {
+public protocol ZZImageSliderViewDelegagte {
     func didTap(item: ZZImageSliderItem)
 }
 
-struct ZZImageSliderView: View {
-    enum Position {
+public struct ZZImageSliderView: View {
+    public enum Position {
         case leading, trailing, top, bottom
     }
     
-    enum AspectRatio {
+    public enum AspectRatio {
         case square, rectangle(ratio: CGFloat)
     }
     
@@ -22,21 +22,21 @@ struct ZZImageSliderView: View {
     
     /// Space for the stack showing side items
     /// default is `8`
-    var sideItemsSpace: CGFloat
+    private var sideItemsSpace: CGFloat
     
     /// Position of the side items
     /// default is `.trailing`
-    var sideItemsPosition: Position
+    private var sideItemsPosition: Position
     
     /// strech the side view as available space, it will be width for horizontal positions and height for vertical positions
     /// default is `0.2` (20%)
-    var sideItemsShare: CGFloat
+    private var sideItemsShare: CGFloat
     
     /// Each side item aspect ratio
     /// default is `.square`
-    var eachSideItemAspectRatio: AspectRatio
+    private var eachSideItemAspectRatio: AspectRatio
     
-    init(viewModel: ZZImageSliderViewModel,
+    public init(viewModel: ZZImageSliderViewModel,
          sideItemsShare: CGFloat = 0.2,
          spaceBetweenItems: CGFloat = 8,
          sideItemsPosition: Position = .trailing,
@@ -49,7 +49,7 @@ struct ZZImageSliderView: View {
         self.eachSideItemAspectRatio = eachSideItemAspectRatio
     }
     
-    var body: some View {
+    public var body: some View {
         GeometryReader { proxy in
             if isVertical {
                 let sideItemWidth = proxy.size.width * sideItemsShare
@@ -105,7 +105,7 @@ struct ZZImageSliderView: View {
         ZStack {
             RoundedRectangle(cornerRadius: 16)
                 .fill(Color.secondary)
-            ZZImageSliderItemView(image: viewModel.currentImage)
+            ZZImageSliderItemView(image: $viewModel.images[viewModel.currentItem.id])
         }
     }
     
@@ -137,7 +137,7 @@ struct ZZImageSliderView: View {
     
     private func sideSliderItemsView(size: CGSize) -> AnyView {
         let views = ForEach(viewModel.items) { item in
-            ZZImageSliderItemView(image: viewModel.imageFor(item: item))
+            ZZImageSliderItemView(image: $viewModel.images[item.id])
                 .frame(width: size.width, height: size.height)
                 .background(Color.secondary)
                 .cornerRadius(8)

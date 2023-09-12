@@ -5,7 +5,7 @@
 import SwiftUI
 
 struct ZZImageSliderItemView: View {
-    var image: UIImage?
+    @Binding var image: UIImage?
 
     var body: some View {
         ZStack {
@@ -17,12 +17,5 @@ struct ZZImageSliderItemView: View {
                 ProgressView()
             }
         }
-    }
-}
-
-struct ZZImageSliderItemView_Previews: PreviewProvider {
-    static var previews: some View {
-        ZZImageSliderItemView(image: .none)
-            .frame(width: 300, height: 150)
     }
 }

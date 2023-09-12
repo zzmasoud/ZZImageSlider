@@ -5,13 +5,13 @@
 import SwiftUI
 import Combine
 
-class ZZImageSliderViewModel: ObservableObject {
+public class ZZImageSliderViewModel: ObservableObject {
     private(set) var items: [ZZImageSliderItem]
     private var timer: TimerProtocol
     private var delegate: ZZImageSliderViewDelegagte?
-    private var imageLoader: ImageLoader
+    private let imageLoader: ImageLoader
     
-    init(items: [ZZImageSliderItem], timer: TimerProtocol = DefaultTimer(timeInterval: 2), delegate: ZZImageSliderViewDelegagte? = nil, imageLoader: ImageLoader) {
+    public init(items: [ZZImageSliderItem], timer: TimerProtocol = DefaultTimer(timeInterval: 2), delegate: ZZImageSliderViewDelegagte? = nil, imageLoader: ImageLoader) {
         self.items = items
         self.currentItem = items[0]
         self.timer = timer
@@ -28,8 +28,7 @@ class ZZImageSliderViewModel: ObservableObject {
     }
     
     @Published var currentItem: ZZImageSliderItem
-    private var images: [String: UIImage] = [:]
-    var currentImage: UIImage? { images[currentItem.id] }
+    @Published var images: [String: UIImage] = [:]
     
     func downloadImages() async {
         for item in items {
