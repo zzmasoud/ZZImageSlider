@@ -4,7 +4,7 @@
 
 import XCTest
 import TestHelper
-@testable import ZZImageSlider
+import ZZImageSlider
 
 final class TimerUseCaseTests: XCTestCase {
     
