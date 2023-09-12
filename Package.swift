@@ -28,17 +28,25 @@ let package = Package(
         .target(
             name: "ZZImageSliderSwiftUI"
         ),
+        .target(
+          name: "TestHelper"
+        )
     ]
 )
 
 package.targets.append(contentsOf: [
     .testTarget(
         name: "ZZImageSliderSwiftUITests",
-        dependencies: ["ZZImageSliderSwiftUI"]
+        dependencies: [
+            "ZZImageSliderSwiftUI",
+            "TestHelper"
+        ]
     ),
     .testTarget(
         name: "SnapshotTests",
         dependencies: [
+            "ZZImageSliderSwiftUI",
+            "TestHelper",
             .product(
                 name: "SnapshotTesting",
                 package: "swift-snapshot-testing"
