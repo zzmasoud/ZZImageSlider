@@ -54,6 +54,9 @@ package.targets.append(contentsOf: [
                 name: "SnapshotTesting",
                 package: "swift-snapshot-testing"
             )
+        ],
+        exclude: [
+            "__Snapshots__"
         ]
     )
 ])
