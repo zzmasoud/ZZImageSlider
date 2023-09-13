@@ -1,0 +1,34 @@
+{
+  "configurations" : [
+    {
+      "id" : "E2C4F234-CEC3-4798-A6D3-DF6B23EBBC49",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : {
+      "targets" : [
+        {
+          "containerPath" : "container:",
+          "identifier" : "ZZImageSliderUI",
+          "name" : "ZZImageSliderUI"
+        }
+      ]
+    },
+    "testExecutionOrdering" : "random",
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SnapshotTests",
+        "name" : "SnapshotTests"
+      }
+    }
+  ],
+  "version" : 1
+}

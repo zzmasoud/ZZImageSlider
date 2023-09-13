@@ -1,0 +1,33 @@
+{
+  "configurations" : [
+    {
+      "id" : "22D0AC9C-1707-4517-BE05-E5505F8E3916",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : {
+      "targets" : [
+        {
+          "containerPath" : "container:",
+          "identifier" : "ZZImageSlider",
+          "name" : "ZZImageSlider"
+        }
+      ]
+    },
+    "testExecutionOrdering" : "random"
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "ZZImageSliderTests",
+        "name" : "ZZImageSliderTests"
+      }
+    }
+  ],
+  "version" : 1
+}
