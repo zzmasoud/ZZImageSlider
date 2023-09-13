@@ -1,7 +1,7 @@
 {
   "configurations" : [
     {
-      "id" : "22D0AC9C-1707-4517-BE05-E5505F8E3916",
+      "id" : "E2C4F234-CEC3-4798-A6D3-DF6B23EBBC49",
       "name" : "Configuration 1",
       "options" : {
 
@@ -13,19 +13,20 @@
       "targets" : [
         {
           "containerPath" : "container:",
-          "identifier" : "ZZImageSlider",
-          "name" : "ZZImageSlider"
+          "identifier" : "ZZImageSliderUI",
+          "name" : "ZZImageSliderUI"
         }
       ]
     },
-    "testExecutionOrdering" : "random"
+    "testExecutionOrdering" : "random",
+    "testTimeoutsEnabled" : true
   },
   "testTargets" : [
     {
       "target" : {
         "containerPath" : "container:",
-        "identifier" : "ZZImageSliderTests",
-        "name" : "ZZImageSliderTests"
+        "identifier" : "SnapshotTests",
+        "name" : "SnapshotTests"
       }
     }
   ],
